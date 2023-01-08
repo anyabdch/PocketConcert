@@ -12,21 +12,22 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=prog_scope))
 target_artists = {}
 saved_songs = []
 concert_name = ''
-tm_artists = ['Leon Bridges']
+tm_artists = ['Leon Bridges'] #while I work on the front end, this is autofilled so the back end still works :)
 user_vibe = {}
 attributes = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'valence']
 
-# somehow user needs to input concert (a  get_concert_info())
+# user needs to input concert (a  get_concert_info())
 def get_concert_info(name):
     global concert_name
     concert_name = name.capitalize()
     events = tm.events.find(keyword=name)
     if events.__len__() > 1:
         pass
-         # print some sort of options
+         # print some sort of options TBD
     else:
          pass
 
+#pulls all the albums by a given artist
 def artist_albums_ids(artist_id):
     album_list = []
     temp = sp.artist_albums(artist_id)['items']
@@ -34,7 +35,7 @@ def artist_albums_ids(artist_id):
         album_list.append(album['id'])
     return album_list
 
-# maybe a helper function for checking artist in library
+# a helper function for checking if artist is in library
 def current_user_listens_to_artist(artist_id):
     album_list = artist_albums_ids(artist_id)
     return sp.current_user_saved_albums_contains(album_list)
@@ -137,18 +138,15 @@ def build_recs_playlist(size):
 
 # run script:
 def main(name,  size='SMALL'):
-    # get_concert_info(name)
+    # get_concert_info(name)  #again this is just while frontend is being built
     find_common_artists()
     get_saved_songs()
     get_user_vibe()
     build_saved_playlist()
     build_recs_playlist(size)
 
-#main(name=input('Please enter the name of the festival/concert'), size='PLease enter the size of playlist you\'d like')
-# page = tm.events.find(include_test='no', include_tba='no', start_date_time='2022-09-14T10:00:00Z',
-#                       include_tbd='no').one()
-# for event in page:
-#     print(event)
+main(name=input('Please enter the name of the festival/concert'), size='PLease enter the size of playlist you\'d like')
+#regardless of what you put for input right now all you'll get is Leon Bridges :)
 
 #future events?
 #seatgeek: 4c57e87051e981580777bdde21a0279a8fb8ace04bc02e4f150df342d6099ac6
